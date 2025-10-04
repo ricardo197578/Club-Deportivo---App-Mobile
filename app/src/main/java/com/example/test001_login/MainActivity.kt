@@ -14,7 +14,13 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
+        //borro esto
         val prefs = getSharedPreferences("username",MODE_PRIVATE);
+
+        //agrego esto Así detecta isLoggedIn que guardás en Login
+
+        //val prefs = getSharedPreferences("mySession", MODE_PRIVATE)
+
         val isLoggedIn = prefs.getBoolean("isLoggedIn", false)
 
         if(isLoggedIn){
