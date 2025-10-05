@@ -12,6 +12,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
         <activity
+            android:name=".admin.ReporteDetalleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.ReportesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.ProfesorFormActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.ProfesoresListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.ActividadFormActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.ActividadesListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.NoSocioFormActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.NoSociosListActivity"
+            android:exported="false" />
+        <activity
             android:name=".admin.SocioFormActivity"
             android:exported="false" />
         <activity
@@ -47,8 +71,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
     </application>
 
 </manifest>
