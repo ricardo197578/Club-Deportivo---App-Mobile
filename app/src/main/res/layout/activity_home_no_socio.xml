@@ -12,4 +12,13 @@
         android:text="Catálogo de actividades" android:layout_marginTop="16dp"/>
     <Button android:layout_width="match_parent" android:layout_height="wrap_content"
         android:text="Inscribirme / Pagar clase" android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cerrar sesión"
+        android:layout_marginTop="12dp"/>
+
+
 </LinearLayout>

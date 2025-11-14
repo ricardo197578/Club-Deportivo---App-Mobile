@@ -1,13 +1,15 @@
+// app/src/main/java/com/example/test001_login/service/LoginService.kt
 package com.example.test001_login.service
 
-class LoginService {
-    val username : String = "Test";
-    val password : String = "1234";
+import android.content.Context
+import com.example.test001_login.data.UserDao
+import com.example.test001_login.model.User
 
-    fun registrarse(usuario : String, contrasenia : String) : String {
-        if(usuario == username && password == contrasenia){
-            return "Inicio exitoso!";
-        }
-        return "Error al iniciar";
+class LoginService(private val context: Context) {
+    private val userDao = UserDao(context)
+
+    /** Devuelve el usuario si (username,password) es válido y está activo; si no, null. */
+    fun authenticate(username: String, password: String): User? {
+        return userDao.getByCredentials(username, password)
     }
 }
