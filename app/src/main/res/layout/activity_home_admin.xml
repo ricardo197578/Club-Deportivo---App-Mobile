@@ -1,48 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="vertical" android:padding="24dp"
-        android:layout_width="match_parent" android:layout_height="wrap_content">
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <!-- Título -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvTituloAdmin"
             android:text="Panel Administrador"
-            android:textStyle="bold" android:textSize="22sp"
-            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
+
+        <!-- CRUD Socios -->
         <Button
             android:id="@+id/btnSocios"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="Socios (CRUD)" android:layout_marginTop="16dp" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Socios (CRUD)"
+            android:layout_marginTop="16dp" />
 
+        <!-- CRUD No Socios -->
         <Button
             android:id="@+id/btnNoSocios"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="No Socios (CRUD)" android:layout_marginTop="8dp" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No Socios (CRUD)"
+            android:layout_marginTop="8dp" />
 
+        <!-- CRUD Actividades -->
         <Button
             android:id="@+id/btnActividades"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="Actividades (CRUD)" android:layout_marginTop="8dp" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Actividades (CRUD)"
+            android:layout_marginTop="8dp" />
 
+        <!-- CRUD Profesores -->
         <Button
             android:id="@+id/btnProfesores"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="Profesores (CRUD)" android:layout_marginTop="8dp" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Profesores (CRUD)"
+            android:layout_marginTop="8dp" />
 
+
+        <!-- NUEVO - Pago de cuota para socios -->
+        <Button
+            android:id="@+id/btnPagarCuota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registrar Pago de Cuota (Socio)"
+            android:layout_marginTop="16dp" />
+
+
+        <!-- NUEVO - Pase diario para no socios -->
+        <Button
+            android:id="@+id/btnPaseDiario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registrar Pase Diario (No Socio)"
+            android:layout_marginTop="8dp" />
+
+
+        <!-- Reportes -->
         <Button
             android:id="@+id/btnReportes"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="Reportes" android:layout_marginTop="8dp" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reportes"
+            android:layout_marginTop="16dp" />
 
+
+        <!-- Logout -->
         <Button
             android:id="@+id/btnLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Cerrar sesión" />
+            android:text="Cerrar sesión"
+            android:layout_marginTop="16dp" />
+
+        <!-- PAGOS DEL DIA -->
+        <Button
+            android:id="@+id/btnPagosDia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pagos del Día"
+            android:layout_marginTop="8dp" />
+
 
     </LinearLayout>
 </ScrollView>

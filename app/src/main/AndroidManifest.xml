@@ -11,6 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
+
+        <activity android:name=".admin.PagoCuotaActivity" />
+        <activity android:name=".admin.PaseDiarioActivity" />
+        <activity android:name=".admin.PagosDelDiaActivity" />
+
+
         <activity
             android:name=".admin.ReporteDetalleActivity"
             android:exported="false" />
