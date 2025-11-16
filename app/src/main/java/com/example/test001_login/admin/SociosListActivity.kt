@@ -45,12 +45,12 @@ class SociosListActivity : AppCompatActivity() {
 
         cargarLista()
     }
-
+        //Usamos onResume para que la lista se actualice automaticamente  cuando creamos,editamos o eliminamos un socio
     override fun onResume() {
         super.onResume()
         cargarLista()
     }
-
+        //SociosListActivity con el siguiente codigo carga los socios desde SQLite
     private fun cargarLista() {
         val lista = repo.getAllSocios()
 
