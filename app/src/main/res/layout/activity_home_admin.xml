@@ -43,14 +43,6 @@
             android:text="Actividades (CRUD)"
             android:layout_marginTop="8dp" />
 
-        <!-- CRUD Profesores -->
-        <Button
-            android:id="@+id/btnProfesores"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Profesores (CRUD)"
-            android:layout_marginTop="8dp" />
-
 
         <!-- NUEVO - Pago de cuota para socios -->
         <Button
@@ -78,6 +70,23 @@
             android:text="Reportes"
             android:layout_marginTop="16dp" />
 
+        <!-- PAGOS DEL DIA -->
+        <Button
+            android:id="@+id/btnPagosDia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pagos del Día"
+            android:layout_marginTop="8dp" />
+
+        <!-- CUOTAS VENCIDAS -->
+        <Button
+            android:id="@+id/btnCuotasVencidas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cuotas vencidas"
+            android:layout_marginTop="16dp" />
+
+
 
         <!-- Logout -->
         <Button
@@ -87,13 +96,8 @@
             android:text="Cerrar sesión"
             android:layout_marginTop="16dp" />
 
-        <!-- PAGOS DEL DIA -->
-        <Button
-            android:id="@+id/btnPagosDia"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Pagos del Día"
-            android:layout_marginTop="8dp" />
+
+
 
 
     </LinearLayout>

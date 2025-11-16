@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.test001_login.R
 import com.example.test001_login.data.PaseDiarioDao
+import com.example.test001_login.data.NoSocioRepository
 import com.example.test001_login.model.PaseDiario
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -22,7 +23,8 @@ class PaseDiarioActivity : AppCompatActivity() {
         val etMonto = findViewById<EditText>(R.id.etMontoPase)
         val btnRegistrar = findViewById<Button>(R.id.btnRegistrarPase)
 
-        val dao = PaseDiarioDao(this)
+        val paseDao = PaseDiarioDao(this)
+        val noSocioRepo = NoSocioRepository(this)
 
         btnRegistrar.setOnClickListener {
 
@@ -35,7 +37,14 @@ class PaseDiarioActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Validación 2: monto numérico
+            // Validación 2: NO SOCIO EXISTE
+            val noSocio = noSocioRepo.getNoSocioByDni(dni)
+            if (noSocio == null) {
+                Toast.makeText(this, "El NO socio no está registrado", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            // Validación 3: monto numérico válido
             val monto = montoStr.toDoubleOrNull()
             if (monto == null) {
                 Toast.makeText(this, "Monto inválido", Toast.LENGTH_SHORT).show()
@@ -46,13 +55,13 @@ class PaseDiarioActivity : AppCompatActivity() {
             val fecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
             val pase = PaseDiario(
-                id = null,   // autoincrement
+                id = null,
                 dni = dni,
                 fecha = fecha,
                 monto = monto
             )
 
-            val resultado = dao.registrarPase(pase)
+            val resultado = paseDao.registrarPase(pase)
 
             if (resultado > 0) {
                 Toast.makeText(this, "Pase registrado correctamente", Toast.LENGTH_LONG).show()
@@ -63,3 +72,5 @@ class PaseDiarioActivity : AppCompatActivity() {
         }
     }
 }
+
+private fun NoSocioRepository.getNoSocioByDni(dni: String) {}

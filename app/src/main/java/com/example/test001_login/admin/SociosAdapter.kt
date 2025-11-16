@@ -1,4 +1,3 @@
-// app/src/main/java/com/example/test001_login/admin/SociosAdapter.kt
 package com.example.test001_login.admin
 
 import android.view.LayoutInflater
@@ -12,7 +11,7 @@ import com.example.test001_login.model.Socio
 
 class SociosAdapter(
     private val items: List<Socio>,
-    private val onClick: (Socio) -> Unit
+    private val onClick: (Socio) -> Unit     // callback para editar
 ) : RecyclerView.Adapter<SociosAdapter.VH>() {
 
     class VH(view: View) : RecyclerView.ViewHolder(view) {
@@ -29,11 +28,21 @@ class SociosAdapter(
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-        val s = items[position]
-        holder.tvNombre.text = s.nombre
-        holder.tvDni.text = s.dni
-        holder.tvEstado.text = s.estado
-        holder.card.setOnClickListener { onClick(s) }
+        val socio = items[position]
+
+        holder.tvNombre.text = socio.nombre
+        holder.tvDni.text = socio.dni
+
+        holder.tvEstado.text = when (socio.activo) {
+            1 -> "Activo"
+            0 -> "Inactivo"
+            2 -> "Vencido"
+            else -> "Desconocido"
+        }
+
+        holder.card.setOnClickListener {
+            onClick(socio)  // → Devuelve el socio completo al Activity
+        }
     }
 
     override fun getItemCount(): Int = items.size

@@ -1,8 +1,13 @@
 package com.example.test001_login.model
 
 data class Socio(
-    val id: Int,
-    val nombre: String,
+    val id: Long,
     val dni: String,
-    val estado: String // "Activo" / "Inactivo" / "Vencido"
+    val nombre: String,
+    val apellido: String,
+    val telefono: String,
+    val direccion: String,
+    val fechaAlta: String?,
+    val fechaUltimoPago: String?,
+    val activo: Int
 )

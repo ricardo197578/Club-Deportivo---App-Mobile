@@ -44,13 +44,6 @@ class HomeAdminActivity : AppCompatActivity() {
         }
 
         // ---------------------------
-        // CRUD PROFESORES
-        // ---------------------------
-        findViewById<Button>(R.id.btnProfesores).setOnClickListener {
-            startActivity(Intent(this, ProfesoresListActivity::class.java))
-        }
-
-        // ---------------------------
         // PAGO DE CUOTA (SOCIOS)
         // ---------------------------
         findViewById<Button>(R.id.btnPagarCuota).setOnClickListener {
@@ -71,6 +64,15 @@ class HomeAdminActivity : AppCompatActivity() {
             startActivity(Intent(this, ReportesActivity::class.java))
         }
 
+        findViewById<Button>(R.id.btnPagosDia).setOnClickListener {
+            startActivity(Intent(this, PagosDelDiaActivity::class.java))
+        }
+
+        findViewById<Button>(R.id.btnCuotasVencidas).setOnClickListener {
+            startActivity(Intent(this, CuotasVencidasActivity::class.java))
+        }
+
+
         // ---------------------------
         // LOGOUT
         // ---------------------------
@@ -79,10 +81,5 @@ class HomeAdminActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
-
-        findViewById<Button>(R.id.btnPagosDia).setOnClickListener {
-            startActivity(Intent(this, PagosDelDiaActivity::class.java))
-        }
-
     }
 }

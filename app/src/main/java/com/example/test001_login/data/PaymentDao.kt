@@ -1,127 +1,112 @@
 package com.example.test001_login.data
 
-import android.content.ContentValues
 import android.content.Context
 import com.example.test001_login.model.Payment
 
 class PaymentDao(context: Context) {
 
     private val dbHelper = AppDbHelper(context)
-    private val rdb = dbHelper.readableDatabase
-    private val wdb = dbHelper.writableDatabase
 
-    /** Registrar un pago mensual */
-    fun registrarPago(p: Payment): Long {
-        val cv = ContentValues().apply {
-            put("socio_dni", p.socioDni)
-            put("fecha_pago", p.fechaPago)
-            put("monto", p.monto)
-        }
-        return wdb.insert("payments", null, cv)
-    }
+    // -------------------------------------------
+    // A) Registrar pago
+    // -------------------------------------------
+    fun registrarPago(pago: Payment): Long {
+        val db = dbHelper.writableDatabase
 
-    /** Devuelve todos los pagos de un socio ordenados por fecha DESC */
-    fun obtenerPagosDeSocio(dni: String): List<Payment> {
-        val lista = mutableListOf<Payment>()
         val sql = """
-            SELECT id, socio_dni, fechaPago, monto
-            FROM payments
-            WHERE socio_dni = ?
-            ORDER BY fecha_pago DESC
+            INSERT INTO payments (socio_dni, fecha_pago, monto)
+            VALUES (?, ?, ?)
         """
 
-        rdb.rawQuery(sql, arrayOf(dni)).use { c ->
-            while (c.moveToNext()) {
-                lista.add(
-                    Payment(
-                        id = c.getLong(0),
-                        socioDni = c.getString(1),
-                        fechaPago = c.getString(2),
-                        monto = c.getDouble(3)
-                    )
-                )
-            }
-        }
-        return lista
+        val stmt = db.compileStatement(sql)
+        stmt.bindString(1, pago.socioDni)
+        stmt.bindString(2, pago.fechaPago)
+        stmt.bindDouble(3, pago.monto)
+
+        return stmt.executeInsert()
     }
 
-    /** Obtener el último pago (para saber si está vencido) */
-    fun obtenerUltimoPago(dni: String): Payment? {
-        val sql = """
-            SELECT id, socio_dni, fecha_pago, monto
-            FROM payments
-            WHERE socio_dni = ?
-            ORDER BY fecha_pago DESC
-            LIMIT 1
-        """
-
-        rdb.rawQuery(sql, arrayOf(dni)).use { c ->
-            return if (c.moveToFirst()) {
-                Payment(
-                    id = c.getLong(0),
-                    socioDni = c.getString(1),
-                    fechaPago = c.getString(2),
-                    monto = c.getDouble(3)
-                )
-            } else null
-        }
-    }
-
-    /**
-     * Devuelve lista de socios cuya cuota vence HOY.
-     * Regla: cuota válida = fecha_pago + 30 días
-     * Se compara con la fecha actual YYYY-MM-DD
-     */
+    // -------------------------------------------
+    // B) Socios con cuota vencida (sí tienen pagos)
+    // -------------------------------------------
     fun sociosConCuotaVencida(fechaHoy: String): List<String> {
+        val db = dbHelper.readableDatabase
         val lista = mutableListOf<String>()
 
         val sql = """
-            SELECT socio_dni
+            SELECT socio_dni, MAX(fecha_pago) AS ultimo_pago
             FROM payments
             GROUP BY socio_dni
-            HAVING DATE(MAX(fecha_pago), '+30 days') = DATE(?)
+            HAVING ultimo_pago < ?
         """
 
-        rdb.rawQuery(sql, arrayOf(fechaHoy)).use { c ->
-            while (c.moveToNext()) {
-                lista.add(c.getString(0))
-            }
+        val cursor = db.rawQuery(sql, arrayOf(fechaHoy))
+
+        if (cursor.moveToFirst()) {
+            do {
+                lista.add(cursor.getString(0))
+            } while (cursor.moveToNext())
         }
 
+        cursor.close()
         return lista
     }
-    fun ultimaFechaPago(dni: String): String? {
+
+    // -------------------------------------------
+    // C) Socios sin ningún pago registrado
+    // -------------------------------------------
+    fun sociosSinPagos(): List<String> {
+        val db = dbHelper.readableDatabase
+        val lista = mutableListOf<String>()
+
         val sql = """
-        SELECT fecha_pago FROM payments
-        WHERE socio_dni = ?
-        ORDER BY fecha_pago DESC LIMIT 1
-    """
-        rdb.rawQuery(sql, arrayOf(dni)).use { c ->
-            return if (c.moveToFirst()) c.getString(0) else null
+            SELECT dni 
+            FROM socios
+            WHERE dni NOT IN (SELECT socio_dni FROM payments)
+        """
+
+        val cursor = db.rawQuery(sql, null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                lista.add(cursor.getString(0))
+            } while (cursor.moveToNext())
         }
+
+        cursor.close()
+        return lista
     }
 
 
     fun listarPagosDelDia(fecha: String): List<Payment> {
+        val db = dbHelper.readableDatabase
         val lista = mutableListOf<Payment>()
+
         val sql = """
         SELECT id, socio_dni, fecha_pago, monto
         FROM payments
         WHERE fecha_pago = ?
+        ORDER BY id DESC
     """
-        rdb.rawQuery(sql, arrayOf(fecha)).use { c ->
-            while (c.moveToNext()) {
+
+        val cursor = db.rawQuery(sql, arrayOf(fecha))
+
+        if (cursor.moveToFirst()) {
+            do {
                 lista.add(
                     Payment(
-                        id = c.getLong(0),
-                        socioDni = c.getString(1),
-                        fechaPago = c.getString(2),
-                        monto = c.getDouble(3)
+                        id = cursor.getLong(cursor.getColumnIndexOrThrow("id")),
+                        socioDni = cursor.getString(cursor.getColumnIndexOrThrow("socio_dni")),
+                        fechaPago = cursor.getString(cursor.getColumnIndexOrThrow("fecha_pago")),
+                        monto = cursor.getDouble(cursor.getColumnIndexOrThrow("monto"))
                     )
                 )
-            }
+            } while (cursor.moveToNext())
         }
+
+        cursor.close()
         return lista
     }
 
 }
+

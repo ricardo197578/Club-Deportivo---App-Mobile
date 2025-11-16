@@ -70,26 +70,36 @@ class PaseDiarioDao(context: Context) {
         return lista
     }
 
+
     fun listarPasesDelDia(fecha: String): List<PaseDiario> {
+        val db = dbHelper.readableDatabase
         val lista = mutableListOf<PaseDiario>()
+
         val sql = """
         SELECT id, dni, fecha, monto
         FROM pases_diarios
         WHERE fecha = ?
+        ORDER BY id DESC
     """
-        rdb.rawQuery(sql, arrayOf(fecha)).use { c ->
-            while (c.moveToNext()) {
+
+        val cursor = db.rawQuery(sql, arrayOf(fecha))
+
+        if (cursor.moveToFirst()) {
+            do {
                 lista.add(
                     PaseDiario(
-                        id = c.getLong(0),
-                        dni = c.getString(1),
-                        fecha = c.getString(2),
-                        monto = c.getDouble(3)
+                        id = cursor.getLong(cursor.getColumnIndexOrThrow("id")),
+                        dni = cursor.getString(cursor.getColumnIndexOrThrow("dni")),
+                        fecha = cursor.getString(cursor.getColumnIndexOrThrow("fecha")),
+                        monto = cursor.getDouble(cursor.getColumnIndexOrThrow("monto"))
                     )
                 )
-            }
+            } while (cursor.moveToNext())
         }
+
+        cursor.close()
         return lista
     }
+
 
 }

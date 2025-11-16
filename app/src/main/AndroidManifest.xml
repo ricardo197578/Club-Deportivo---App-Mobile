@@ -12,71 +12,66 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
 
+        <!-- ========================= -->
+        <!--  ADMIN – PAGOS / REPORTES -->
+        <!-- ========================= -->
         <activity android:name=".admin.PagoCuotaActivity" />
         <activity android:name=".admin.PaseDiarioActivity" />
         <activity android:name=".admin.PagosDelDiaActivity" />
+        <activity android:name=".admin.CuotasVencidasActivity" />
+        <activity android:name=".admin.ReporteDetalleActivity"
+            android:exported="false" />
+        <activity android:name=".admin.ReportesActivity"
+            android:exported="false" />
 
+        <!-- ========================= -->
+        <!--      CRUD ENTIDADES       -->
+        <!-- ========================= -->
+        <activity android:name=".admin.ActividadFormActivity"
+            android:exported="false" />
+        <activity android:name=".admin.ActividadesListActivity"
+            android:exported="false" />
 
-        <activity
-            android:name=".admin.ReporteDetalleActivity"
+        <activity android:name=".admin.NoSocioFormActivity"
             android:exported="false" />
-        <activity
-            android:name=".admin.ReportesActivity"
+        <activity android:name=".admin.NoSociosListActivity"
             android:exported="false" />
-        <activity
-            android:name=".admin.ProfesorFormActivity"
+
+        <activity android:name=".admin.SocioFormActivity"
             android:exported="false" />
-        <activity
-            android:name=".admin.ProfesoresListActivity"
+        <activity android:name=".admin.SociosListActivity"
             android:exported="false" />
-        <activity
-            android:name=".admin.ActividadFormActivity"
+
+        <!-- ========================= -->
+        <!--     HOME SCREENS          -->
+        <!-- ========================= -->
+        <activity android:name=".home.HomeNoSocioActivity"
             android:exported="false" />
-        <activity
-            android:name=".admin.ActividadesListActivity"
+        <activity android:name=".home.HomeSocioActivity"
             android:exported="false" />
-        <activity
-            android:name=".admin.NoSocioFormActivity"
+
+        <!-- ✔ ESTA ERA LA QUE FALTABA -->
+        <activity android:name=".home.HomeAdminActivity"
             android:exported="false" />
-        <activity
-            android:name=".admin.NoSociosListActivity"
+
+        <!-- ========================= -->
+        <!--  CORE APP (LOGIN / MAIN)  -->
+        <!-- ========================= -->
+        <activity android:name=".RegisterActivity"
             android:exported="false" />
-        <activity
-            android:name=".admin.SocioFormActivity"
+        <activity android:name=".DashboardActivity"
             android:exported="false" />
-        <activity
-            android:name=".admin.SociosListActivity"
+        <activity android:name=".LoginActivity"
             android:exported="false" />
-        <activity
-            android:name=".home.HomeProfesorActivity"
-            android:exported="false" />
-        <activity
-            android:name=".home.HomeNoSocioActivity"
-            android:exported="false" />
-        <activity
-            android:name=".home.HomeSocioActivity"
-            android:exported="false" />
-        <activity
-            android:name=".home.HomeAdminActivity"
-            android:exported="false" />
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".DashboardActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+
+        <activity android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

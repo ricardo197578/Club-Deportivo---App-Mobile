@@ -4,14 +4,6 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-/**
- * Helper de SQLite para crear/actualizar la base local.
- * DB: club_deportivo.db
- * Tablas:
- *  - users (credenciales y roles)
- *  - payments (pagos mensuales de socios)
- *  - pases_diarios (no socios — pase diario)
- */
 class AppDbHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
@@ -32,11 +24,46 @@ class AppDbHelper(context: Context) :
             """.trimIndent()
         )
 
-        // Semilla opcional: usuario admin
+        // Usuario admin por defecto
         db.execSQL(
             """
             INSERT OR IGNORE INTO users(username, password, role, is_active)
             VALUES('admin', '1234', 'ADMIN', 1);
+            """.trimIndent()
+        )
+
+        // -------------------------
+        // TABLA SOCIOS
+        // -------------------------
+        db.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS socios(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                dni TEXT NOT NULL UNIQUE,
+                nombre TEXT NOT NULL,
+                apellido TEXT,
+                telefono TEXT,
+                direccion TEXT,
+                fecha_alta TEXT NOT NULL,
+                fecha_ultimo_pago TEXT,
+                activo INTEGER NOT NULL
+            );
+            """.trimIndent()
+        )
+
+        // -------------------------
+        // TABLA NO_SOCIOS
+        // -------------------------
+        db.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS no_socios(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                dni TEXT NOT NULL,
+                nombre TEXT NOT NULL,
+                apellido TEXT,
+                telefono TEXT,
+                fecha_registro TEXT NOT NULL
+            );
             """.trimIndent()
         )
 
@@ -48,7 +75,7 @@ class AppDbHelper(context: Context) :
             CREATE TABLE IF NOT EXISTS payments(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 socio_dni TEXT NOT NULL,
-                fecha_pago TEXT NOT NULL,     -- formato yyyy-MM-dd
+                fecha_pago TEXT NOT NULL,
                 monto REAL NOT NULL
             );
             """.trimIndent()
@@ -62,20 +89,14 @@ class AppDbHelper(context: Context) :
             CREATE TABLE IF NOT EXISTS pases_diarios(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 dni TEXT NOT NULL,
-                fecha TEXT NOT NULL,          -- yyyy-MM-dd
+                fecha TEXT NOT NULL,
                 monto REAL NOT NULL
             );
             """.trimIndent()
         )
     }
 
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // En caso de cambios de esquema, migraciones aquí.
-        // Ejemplo:
-        // db.execSQL("DROP TABLE IF EXISTS payments")
-        // db.execSQL("DROP TABLE IF EXISTS pases_diarios")
-        // onCreate(db)
-    }
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) { }
 
     companion object {
         const val DATABASE_NAME = "club_deportivo.db"

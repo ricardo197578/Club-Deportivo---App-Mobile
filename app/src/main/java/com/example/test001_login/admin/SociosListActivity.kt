@@ -1,4 +1,3 @@
-// app/src/main/java/com/example/test001_login/admin/SociosListActivity.kt
 package com.example.test001_login.admin
 
 import android.content.Intent
@@ -8,38 +7,62 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test001_login.R
+import com.example.test001_login.data.SocioRepository
 import com.example.test001_login.model.Socio
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class SociosListActivity : AppCompatActivity() {
+
+    private lateinit var repo: SocioRepository
+    private lateinit var rv: RecyclerView
+    private lateinit var adapter: SociosAdapter      // ⬅️ Reutilizamos adapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_socios_list)
 
-        val rv = findViewById<RecyclerView>(R.id.rvSocios)
+        repo = SocioRepository(this)
+
+        rv = findViewById(R.id.rvSocios)
         rv.layoutManager = LinearLayoutManager(this)
 
-        // Datos mock para la demo
-        val datos = listOf(
-            Socio(1, "Ana López", "36.123.456", "Activo"),
-            Socio(2, "Juan Pérez", "30.987.654", "Vencido"),
-            Socio(3, "María Díaz", "41.555.222", "Inactivo")
-        )
-
-        rv.adapter = SociosAdapter(datos) { socio ->
-            // Al tocar un socio, abrimos el formulario en "modo edición" (mock)
+        // Inicializamos adapter vacío
+        adapter = SociosAdapter(emptyList()) { socio ->
             val i = Intent(this, SocioFormActivity::class.java)
-            i.putExtra("socioNombre", socio.nombre)
+            i.putExtra("modo", "edicion")
             i.putExtra("socioDni", socio.dni)
-            i.putExtra("socioEstado", socio.estado)
+            startActivity(i)
+        }
+        rv.adapter = adapter
+
+        // FAB → abrir formulario para ALTA
+        findViewById<FloatingActionButton>(R.id.fabAgregar).setOnClickListener {
+            val i = Intent(this, SocioFormActivity::class.java)
+            i.putExtra("modo", "alta")
             startActivity(i)
         }
 
-        // FAB: alta de socio (mock)
-        findViewById<FloatingActionButton>(R.id.fabAgregar).setOnClickListener {
-            startActivity(Intent(this, SocioFormActivity::class.java))
+        cargarLista()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        cargarLista()
+    }
+
+    private fun cargarLista() {
+        val lista = repo.getAllSocios()
+
+        // Actualizamos datos del adapter
+        adapter = SociosAdapter(lista) { socio ->
+            val i = Intent(this, SocioFormActivity::class.java)
+            i.putExtra("modo", "edicion")
+            i.putExtra("socioDni", socio.dni)
+            startActivity(i)
         }
+
+        rv.adapter = adapter
     }
 }
+

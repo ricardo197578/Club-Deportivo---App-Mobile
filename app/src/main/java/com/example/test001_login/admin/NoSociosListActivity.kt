@@ -7,36 +7,48 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test001_login.R
+import com.example.test001_login.data.NoSocioRepository
 import com.example.test001_login.model.NoSocio
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class NoSociosListActivity : AppCompatActivity() {
+
+    private lateinit var repo: NoSocioRepository
+    private lateinit var rv: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_no_socios_list)
 
-        val rv = findViewById<RecyclerView>(R.id.rvNoSocios)
+        repo = NoSocioRepository(this)
+
+        rv = findViewById(R.id.rvNoSocios)
         rv.layoutManager = LinearLayoutManager(this)
 
-        // Datos mock
-        val datos = listOf(
-            NoSocio(1, "Carlos Gómez", "32.111.222", "11-5555-1111"),
-            NoSocio(2, "Lucía Méndez", "40.222.333", "11-5555-2222"),
-            NoSocio(3, "Pablo Ruiz",   "28.444.555", "11-5555-3333")
-        )
-
-        rv.adapter = NoSociosAdapter(datos) { item ->
+        // FAB → abrir formulario de NO SOCIO
+        findViewById<FloatingActionButton>(R.id.fabAgregarNoSocio).setOnClickListener {
             val i = Intent(this, NoSocioFormActivity::class.java)
-            i.putExtra("nombre", item.nombre)
-            i.putExtra("dni", item.dni)
-            i.putExtra("telefono", item.telefono)
             startActivity(i)
         }
 
-        findViewById<FloatingActionButton>(R.id.fabAgregarNoSocio).setOnClickListener {
-            startActivity(Intent(this, NoSocioFormActivity::class.java)) // alta
+        cargarLista()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        cargarLista()
+    }
+
+    private fun cargarLista() {
+        val datos = repo.getAllNoSocios()
+
+        rv.adapter = NoSociosAdapter(datos) { item ->
+            val i = Intent(this, NoSocioFormActivity::class.java)
+            i.putExtra("dni", item.dni)
+            i.putExtra("nombre", item.nombre)
+            i.putExtra("telefono", item.telefono)
+            startActivity(i)
         }
     }
 }

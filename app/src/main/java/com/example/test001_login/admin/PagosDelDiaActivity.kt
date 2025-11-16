@@ -1,6 +1,7 @@
 package com.example.test001_login.admin
 
 import android.os.Bundle
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.test001_login.R
@@ -10,22 +11,52 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PagosDelDiaActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pagos_del_dia)
 
+        // Referencias a los TextViews
         val tvSocios = findViewById<TextView>(R.id.tvPagosSocios)
         val tvNoSocios = findViewById<TextView>(R.id.tvPagosNoSocios)
 
-        val hoy = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        // DAOs
+        val pagoDao = PaymentDao(this)
+        val paseDao = PaseDiarioDao(this)
 
-        val pagosSocios = PaymentDao(this).listarPagosDelDia(hoy)
-        val pagosNoSocios = PaseDiarioDao(this).listarPasesDelDia(hoy)
+        // Fecha actual
+        val fechaHoy = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
-        tvSocios.text = "Pagos socios:\n" +
-                pagosSocios.joinToString("\n") { "${it.socioDni} - $${it.monto}" }
+        // Consultas
+        val pagosSocios = pagoDao.listarPagosDelDia(fechaHoy)
+        val pasesNoSocios = paseDao.listarPasesDelDia(fechaHoy)
 
-        tvNoSocios.text = "Pagos no socios:\n" +
-                pagosNoSocios.joinToString("\n") { "${it.dni} - $${it.monto}" }
+        // --- Mostrar pagos de socios ---
+        if (pagosSocios.isEmpty()) {
+            tvSocios.text = "Pagos socios: (ninguno)"
+        } else {
+            val texto = StringBuilder("Pagos socios:\n\n")
+            pagosSocios.forEach {
+                texto.append("DNI: ${it.socioDni}\n")
+                texto.append("Monto: \$${it.monto}\n")
+                texto.append("Fecha: ${it.fechaPago}\n")
+                texto.append("----------------------\n")
+            }
+            tvSocios.text = texto.toString()
+        }
+
+        // --- Mostrar pagos NO socios ---
+        if (pasesNoSocios.isEmpty()) {
+            tvNoSocios.text = "Pagos no socios: (ninguno)"
+        } else {
+            val texto = StringBuilder("Pagos no socios:\n\n")
+            pasesNoSocios.forEach {
+                texto.append("DNI: ${it.dni}\n")
+                texto.append("Monto: \$${it.monto}\n")
+                texto.append("Fecha: ${it.fecha}\n")
+                texto.append("----------------------\n")
+            }
+            tvNoSocios.text = texto.toString()
+        }
     }
 }

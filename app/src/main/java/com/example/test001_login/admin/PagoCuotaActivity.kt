@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.test001_login.R
 import com.example.test001_login.data.PaymentDao
+import com.example.test001_login.data.SocioRepository
 import com.example.test001_login.model.Payment
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -23,6 +24,7 @@ class PagoCuotaActivity : AppCompatActivity() {
         val btnRegistrar = findViewById<Button>(R.id.btnRegistrarPago)
 
         val dao = PaymentDao(this)
+        val socioRepo = SocioRepository(this)
 
         btnRegistrar.setOnClickListener {
 
@@ -35,7 +37,14 @@ class PagoCuotaActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Validación 2: monto válido
+            // Validación 2: socio existente
+            val socio = socioRepo.getSocioByDni(dni)
+            if (socio == null) {
+                Toast.makeText(this, "El socio no existe", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            // Validación 3: monto válido
             val monto = montoStr.toDoubleOrNull()
             if (monto == null) {
                 Toast.makeText(this, "Monto inválido", Toast.LENGTH_SHORT).show()
@@ -46,7 +55,7 @@ class PagoCuotaActivity : AppCompatActivity() {
             val fechaHoy = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
             val pago = Payment(
-                id = null,         // autoincrement
+                id = null,
                 socioDni = dni,
                 fechaPago = fechaHoy,
                 monto = monto
@@ -55,8 +64,13 @@ class PagoCuotaActivity : AppCompatActivity() {
             val resultado = dao.registrarPago(pago)
 
             if (resultado > 0) {
+
+                // Actualizar fecha de último pago del socio
+                socioRepo.actualizarFechaUltimoPago(dni, fechaHoy)
+
                 Toast.makeText(this, "Pago registrado correctamente", Toast.LENGTH_LONG).show()
                 finish()
+
             } else {
                 Toast.makeText(this, "Error al registrar el pago", Toast.LENGTH_LONG).show()
             }
