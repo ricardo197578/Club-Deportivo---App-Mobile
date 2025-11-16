@@ -32,7 +32,10 @@ class SociosAdapter(
 
         holder.tvNombre.text = socio.nombre
         holder.tvDni.text = socio.dni
-
+        
+        //El RecyclerView muestra la lista usando SociosAdapter
+        //El adapter convierte cada socio en un item visual.
+        // Muestra el estado según su campo "activo".
         holder.tvEstado.text = when (socio.activo) {
             1 -> "Activo"
             0 -> "Inactivo"
@@ -41,7 +44,7 @@ class SociosAdapter(
         }
 
         holder.card.setOnClickListener {
-            onClick(socio)  //  Devuelve el socio completo al Activity
+            onClick(socio)  //  Devuelve el socio completo al Activity,Cuando se hace clic, el adaptador envía el socio a la activity siguiente (SocioFormActivity).
         }
     }
 
