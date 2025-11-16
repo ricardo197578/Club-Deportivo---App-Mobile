@@ -1,55 +1,108 @@
 package com.example.test001_login.admin
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.test001_login.R
 import com.example.test001_login.data.NoSocioRepository
-import com.google.android.material.textfield.TextInputEditText
-import java.time.LocalDate
+import com.example.test001_login.model.NoSocio
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NoSocioFormActivity : AppCompatActivity() {
 
-    private lateinit var repo: NoSocioRepository
+    private var modoEdicion = false
+    private var dniOriginal: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_no_socio_form)
 
-        repo = NoSocioRepository(this)
+        val etNombre = findViewById<EditText>(R.id.etNombreNoSocio)
+        val etApellido = findViewById<EditText>(R.id.etApellidoNoSocio)
+        val etDni = findViewById<EditText>(R.id.etDniNoSocio)
+        val etTelefono = findViewById<EditText>(R.id.etTelefonoNoSocio)
 
-        val etNombre = findViewById<TextInputEditText>(R.id.etNombreNoSocio)
-        val etDni = findViewById<TextInputEditText>(R.id.etDniNoSocio)
-        val etTel = findViewById<TextInputEditText>(R.id.etTelNoSocio)
+        val btnGuardar = findViewById<Button>(R.id.btnGuardarNoSocio)
+        val btnCancelar = findViewById<Button>(R.id.btnCancelarNoSocio)
+        val btnEliminar = findViewById<Button>(R.id.btnEliminarNoSocio)
 
-        findViewById<Button>(R.id.btnGuardarNoSocio).setOnClickListener {
-            val nombre = etNombre.text.toString()
-            val dni = etDni.text.toString()
-            val tel = etTel.text.toString()
+        val repo = NoSocioRepository(this)
 
-            if (nombre.isEmpty() || dni.isEmpty()) {
-                Toast.makeText(this, "Completar campos", Toast.LENGTH_SHORT).show()
+        // ¿VIENE A EDITAR?
+        val dniRecibido = intent.getStringExtra("dni")
+        if (dniRecibido != null) {
+            modoEdicion = true
+            dniOriginal = dniRecibido
+
+            val noSocio = repo.getNoSocioByDni(dniRecibido)
+            noSocio?.let {
+                etNombre.setText(it.nombre)
+                etApellido.setText(it.apellido)
+                etDni.setText(it.dni)
+                etDni.isEnabled = false
+                etTelefono.setText(it.telefono)
+            }
+
+            btnEliminar.visibility = View.VISIBLE
+        } else {
+            btnEliminar.visibility = View.GONE
+        }
+
+        // GUARDAR
+        btnGuardar.setOnClickListener {
+
+            val nombre = etNombre.text.toString().trim()
+            val apellido = etApellido.text.toString().trim()
+            val dni = etDni.text.toString().trim()
+            val telefono = etTelefono.text.toString().trim()
+
+            if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty()) {
+                Toast.makeText(this, "Complete todos los campos", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val ok = repo.insertNoSocio(
-                dni = dni,
+            // Fecha de registro SOLO para nuevos
+            val fechaHoy = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
+            val modelo = NoSocio(
+                id = null,
                 nombre = nombre,
-                telefono = tel,
-                fecha = LocalDate.now().toString()
+                apellido = apellido,
+                dni = dni,
+                telefono = telefono,
+                fechaRegistro = fechaHoy
             )
 
+
+            val ok: Boolean = if (modoEdicion) {
+                repo.updateNoSocio(modelo)
+            } else {
+                repo.insertNoSocio(modelo)
+            }
+
+
             if (ok) {
-                Toast.makeText(this, "Registrado correctamente", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Guardado correctamente", Toast.LENGTH_LONG).show()
                 finish()
             } else {
-                Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error al guardar", Toast.LENGTH_LONG).show()
             }
         }
 
-        findViewById<Button>(R.id.btnCancelarNoSocio).setOnClickListener { finish() }
+        // CANCELAR
+        btnCancelar.setOnClickListener { finish() }
+
+        // ELIMINAR
+        btnEliminar.setOnClickListener {
+            dniOriginal?.let {
+                repo.deleteNoSocio(it)
+                Toast.makeText(this, "No socio eliminado", Toast.LENGTH_LONG).show()
+                finish()
+            }
+        }
     }
 }

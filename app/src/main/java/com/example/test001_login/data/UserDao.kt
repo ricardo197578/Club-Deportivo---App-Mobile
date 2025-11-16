@@ -8,7 +8,6 @@ import com.example.test001_login.model.UserRole
 /**
  * DAO de acceso a la tabla `users`.
  * NOTA: Para la demo guardamos password en texto plano.
- * En producción usá HASH (p.ej., BCrypt) y compara hashes.
  */
 class UserDao(context: Context) {
 

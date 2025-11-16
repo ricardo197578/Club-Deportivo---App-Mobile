@@ -56,14 +56,15 @@ class AppDbHelper(context: Context) :
         // -------------------------
         db.execSQL(
             """
-            CREATE TABLE IF NOT EXISTS no_socios(
+            CREATE TABLE no_socios (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                dni TEXT NOT NULL,
                 nombre TEXT NOT NULL,
-                apellido TEXT,
+                apellido TEXT NOT NULL,
+                dni TEXT UNIQUE NOT NULL,
                 telefono TEXT,
                 fecha_registro TEXT NOT NULL
             );
+
             """.trimIndent()
         )
 

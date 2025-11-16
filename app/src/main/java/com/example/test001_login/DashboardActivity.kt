@@ -44,7 +44,7 @@ class DashboardActivity : AppCompatActivity() {
             window.statusBarColor = colorTransparente
         }
 
-        // === Navegación a cada Home ===
+        // Navegación a cada Home
         findViewById<Button>(R.id.btnRolAdmin).setOnClickListener {
             startActivity(Intent(this, HomeAdminActivity::class.java))
         }

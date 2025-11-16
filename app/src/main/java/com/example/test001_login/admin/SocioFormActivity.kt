@@ -110,7 +110,7 @@ class SocioFormActivity : AppCompatActivity() {
                     apellido = apellido,
                     telefono = telefono,
                     direccion = direccion,
-                    fechaAlta = fechaHoy,               // ✔ SIEMPRE NO NULO
+                    fechaAlta = fechaHoy,               //  SIEMPRE NO NULO
                     fechaUltimoPago = ultimoPagoTxt.ifEmpty { null },
                     activo = activo
                 )
@@ -128,12 +128,12 @@ class SocioFormActivity : AppCompatActivity() {
 
                 val socio = Socio(
                     id = orig.id,
-                    dni = orig.dni,                      // ✔ No se modifica
+                    dni = orig.dni,                      // No se modifica
                     nombre = nombre,
                     apellido = apellido,
                     telefono = telefono,
                     direccion = direccion,
-                    fechaAlta = orig.fechaAlta,          // ✔ Mantener
+                    fechaAlta = orig.fechaAlta,
                     fechaUltimoPago = ultimoPagoTxt.ifEmpty { orig.fechaUltimoPago },
                     activo = activo
                 )

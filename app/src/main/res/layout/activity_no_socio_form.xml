@@ -17,9 +17,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+        <!-- Nombre -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_marginTop="16dp"
-            android:hint="Nombre y apellido"
+            android:hint="Nombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
@@ -28,6 +29,19 @@
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Apellido -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="12dp"
+            android:hint="Apellido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etApellidoNoSocio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- DNI -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_marginTop="12dp"
             android:hint="DNI"
@@ -40,21 +54,23 @@
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Teléfono -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_marginTop="12dp"
             android:hint="Teléfono"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etTelNoSocio"
+                android:id="@+id/etTelefonoNoSocio"
                 android:inputType="phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Botones -->
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="24dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -68,10 +84,21 @@
             <Button
                 android:id="@+id/btnCancelarNoSocio"
                 android:text="Cancelar"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="16dp"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
+
+        <!-- Eliminar -->
+        <Button
+            android:id="@+id/btnEliminarNoSocio"
+            android:text="ELIMINAR"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/holo_red_light"
+            android:visibility="gone"/>
     </LinearLayout>
+
 </ScrollView>

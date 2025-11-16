@@ -41,7 +41,7 @@ class SociosAdapter(
         }
 
         holder.card.setOnClickListener {
-            onClick(socio)  // → Devuelve el socio completo al Activity
+            onClick(socio)  //  Devuelve el socio completo al Activity
         }
     }
 

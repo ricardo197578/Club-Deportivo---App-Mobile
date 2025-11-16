@@ -2,7 +2,6 @@ package com.example.test001_login.admin
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +17,6 @@ class NoSociosListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_no_socios_list)
 
         repo = NoSocioRepository(this)
@@ -26,10 +24,8 @@ class NoSociosListActivity : AppCompatActivity() {
         rv = findViewById(R.id.rvNoSocios)
         rv.layoutManager = LinearLayoutManager(this)
 
-        // FAB → abrir formulario de NO SOCIO
         findViewById<FloatingActionButton>(R.id.fabAgregarNoSocio).setOnClickListener {
-            val i = Intent(this, NoSocioFormActivity::class.java)
-            startActivity(i)
+            startActivity(Intent(this, NoSocioFormActivity::class.java))
         }
 
         cargarLista()
@@ -41,14 +37,12 @@ class NoSociosListActivity : AppCompatActivity() {
     }
 
     private fun cargarLista() {
-        val datos = repo.getAllNoSocios()
-
-        rv.adapter = NoSociosAdapter(datos) { item ->
+        val lista = repo.getAllNoSocios()
+        rv.adapter = NoSociosAdapter(lista) { noSocio ->
             val i = Intent(this, NoSocioFormActivity::class.java)
-            i.putExtra("dni", item.dni)
-            i.putExtra("nombre", item.nombre)
-            i.putExtra("telefono", item.telefono)
+            i.putExtra("dni", noSocio.dni)
             startActivity(i)
         }
     }
 }
+

@@ -15,7 +15,7 @@ class SociosListActivity : AppCompatActivity() {
 
     private lateinit var repo: SocioRepository
     private lateinit var rv: RecyclerView
-    private lateinit var adapter: SociosAdapter      // ⬅️ Reutilizamos adapter
+    private lateinit var adapter: SociosAdapter      //  Reutilizamos adapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,7 @@ class SociosListActivity : AppCompatActivity() {
         }
         rv.adapter = adapter
 
-        // FAB → abrir formulario para ALTA
+        // FAB abrir formulario para ALTA
         findViewById<FloatingActionButton>(R.id.fabAgregar).setOnClickListener {
             val i = Intent(this, SocioFormActivity::class.java)
             i.putExtra("modo", "alta")
