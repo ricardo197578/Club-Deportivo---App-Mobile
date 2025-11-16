@@ -23,7 +23,7 @@ class HomeAdminActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home_admin)
 
         // ---------------------------
-        // CRUD SOCIOS
+        // CRUD SOCIOS: Esto abre SociosListActivity, que es la pantalla donde se listan todos los socios.
         // ---------------------------
         findViewById<Button>(R.id.btnSocios).setOnClickListener {
             startActivity(Intent(this, SociosListActivity::class.java))
