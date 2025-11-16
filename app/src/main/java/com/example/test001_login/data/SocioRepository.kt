@@ -52,7 +52,9 @@ class SocioRepository(context: Context) {
         cursor.close()
         return null
     }
-
+        //getAllSocios() trae los datos desde la base SQLite
+        //Este método:Ejecuta un SELECT,Crea objetos Socio,Los devuelve para mostrarlos en pantalla
+        //Es la capa que conecta el UI con la base de datos.
     fun getAllSocios(): List<Socio> {
         val db = dbHelper.readableDatabase
         val lista = mutableListOf<Socio>()
